@@ -1,5 +1,5 @@
 # GROGU GAME
-![project image](assets\image\grogu\grogu_start.png)
+![project image](assets/image/grogu/grogu_start.png)
 ## Описание проекта
 Реализована попытка создать легкую игру по типу Dino T-Rex от Google.
 Суть игры близка к оригиналу, персонаж бесконечно бежит и уклоняется от препятствий.
@@ -37,5 +37,5 @@
 * реализовать идеи в коде
 
 
-![project image](assets\image\funart.png)
+![project image](assets/image/funart.png)
 _автор иллюстрации: https://twitter.com/WoostarsPixels_
