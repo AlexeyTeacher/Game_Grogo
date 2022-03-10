@@ -38,4 +38,5 @@
 
 
 ![project image](assets/image/funart.png)
+
 _автор иллюстрации: https://twitter.com/WoostarsPixels_
