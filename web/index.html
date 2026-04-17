@@ -25,26 +25,49 @@
             display: block;
             image-rendering: pixelated;
         }
+        /* Portrait blocker */
+        #portrait-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: #111;
+            color: #fff;
+            font-family: sans-serif;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+            z-index: 99;
+        }
+        #portrait-overlay .icon { font-size: 64px; }
+        #portrait-overlay p     { font-size: 20px; letter-spacing: 1px; }
+        @media (orientation: portrait) {
+            #portrait-overlay { display: flex; }
+        }
         /* Mobile touch hint */
         #touch-hint {
             display: none;
             position: absolute;
-            bottom: 20px;
+            bottom: 16px;
             color: rgba(255,255,255,0.5);
             font-size: 13px;
             font-family: sans-serif;
             text-align: center;
             pointer-events: none;
         }
-        @media (pointer: coarse) {
+        @media (pointer: coarse) and (orientation: landscape) {
             #touch-hint { display: block; }
         }
     </style>
 </head>
 <body>
+    <div id="portrait-overlay">
+        <div class="icon">↻</div>
+        <p>Rotate your phone</p>
+    </div>
     <div id="loading">Loading...</div>
     <canvas id="game"></canvas>
-    <div id="touch-hint">Tap top half to jump &nbsp;·&nbsp; Tap bottom half to duck</div>
+    <div id="touch-hint">Swipe up / tap to jump &nbsp;·&nbsp; Swipe down to duck</div>
     <script src="game.js"></script>
 </body>
 </html>

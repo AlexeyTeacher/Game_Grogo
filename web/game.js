@@ -13,12 +13,14 @@ CANVAS.width  = W;
 CANVAS.height = H;
 
 function resize() {
-    const s = Math.min(window.innerWidth / W, window.innerHeight / H);
+    const vw = window.visualViewport ? window.visualViewport.width  : window.innerWidth;
+    const vh = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+    const s  = Math.min(vw / W, vh / H);
     CANVAS.style.width  = Math.floor(W * s) + 'px';
     CANVAS.style.height = Math.floor(H * s) + 'px';
 }
 resize();
-window.addEventListener('resize', resize);
+(window.visualViewport || window).addEventListener('resize', resize);
 
 // ── ASSETS ───────────────────────────────────────────────────────────────────
 const IMG = {};
@@ -325,7 +327,7 @@ function drawMenu() {
     drawStaticBackground();
     CTX.drawImage(IMG.start, 80, H * 0.66);
     drawText('Press any Key to Start',     W / 2, H / 2 - 50);
-    drawText('Height Score: ' + getHighScore(), W / 2, H / 2 + 100);
+    drawText('High Score:' + getHighScore(), W / 2, H / 2 + 100);
 }
 
 function drawDeadScreen() {
@@ -333,7 +335,7 @@ function drawDeadScreen() {
     CTX.drawImage(IMG.dead, 80, H * 0.66);
     drawText('Press any Key to Restart', W / 2, H / 2 - 50);
     drawText('Your Score: ' + POINTS,       W / 2, H / 2 + 50);
-    drawText('Height Score: ' + getHighScore(), W / 2, H / 2 + 100);
+    drawText('High Score:' + getHighScore(), W / 2, H / 2 + 100);
 }
 
 // ── GAME LOOP ─────────────────────────────────────────────────────────────────
@@ -408,18 +410,41 @@ window.addEventListener('keydown', e => {
     if (state === 'menu' || state === 'dead') initGame();
 });
 
+// ── SWIPE CONTROLS ────────────────────────────────────────────────────────────
+let touchStartY = 0;
+const SWIPE_PX  = 30; // minimum px to count as a directional swipe
+
 CANVAS.addEventListener('touchstart', e => {
     e.preventDefault();
+    touchStartY = e.touches[0].clientY;
     if (state === 'menu' || state === 'dead') { initGame(); return; }
-    const relY = e.touches[0].clientY / window.innerHeight;
-    if (relY < 0.5) KEYS['Space']     = true;
-    else             KEYS['ArrowDown'] = true;
+}, { passive: false });
+
+CANVAS.addEventListener('touchmove', e => {
+    e.preventDefault();
+    if (state !== 'playing') return;
+    const dy = e.touches[0].clientY - touchStartY;
+    if (dy > SWIPE_PX) {
+        // Dragging down → duck (held as long as finger is down)
+        KEYS['ArrowDown'] = true;
+        KEYS['Space']     = false;
+    } else {
+        KEYS['ArrowDown'] = false;
+    }
 }, { passive: false });
 
 CANVAS.addEventListener('touchend', e => {
     e.preventDefault();
-    KEYS['Space']     = false;
+    if (state !== 'playing') return;
+    const dy = e.changedTouches[0].clientY - touchStartY;
+
     KEYS['ArrowDown'] = false;
+
+    // Tap or swipe up → jump (anything that isn't a downward swipe)
+    if (dy <= SWIPE_PX) {
+        KEYS['Space'] = true;
+        setTimeout(() => { KEYS['Space'] = false; }, 50);
+    }
 }, { passive: false });
 
 // ── BOOT ──────────────────────────────────────────────────────────────────────
