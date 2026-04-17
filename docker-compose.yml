@@ -3,5 +3,8 @@ services:
   grogu-game:
     build: .
     ports:
-      - "80:80"    # замени на "8080:80" если порт 80 уже занят
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt:ro
     restart: unless-stopped
