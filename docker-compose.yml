@@ -1,0 +1,6 @@
+services:
+  grogu-game:
+    build: .
+    ports:
+      - "80:80"    # замени на "8080:80" если порт 80 уже занят
+    restart: unless-stopped

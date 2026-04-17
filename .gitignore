@@ -1,0 +1,15 @@
+# Claude
+/.claude/
+/.idea
+# Python
+venv/
+__pycache__/
+*.pyc
+
+# PyInstaller build artifacts
+dist/
+build/
+*.spec
+
+# Game runtime data
+assets/height_score.txt

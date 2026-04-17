@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grogu Game</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #111;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        #loading {
+            position: absolute;
+            color: #fff;
+            font-size: 24px;
+            font-family: sans-serif;
+            letter-spacing: 2px;
+        }
+        canvas {
+            display: block;
+            image-rendering: pixelated;
+        }
+        /* Mobile touch hint */
+        #touch-hint {
+            display: none;
+            position: absolute;
+            bottom: 20px;
+            color: rgba(255,255,255,0.5);
+            font-size: 13px;
+            font-family: sans-serif;
+            text-align: center;
+            pointer-events: none;
+        }
+        @media (pointer: coarse) {
+            #touch-hint { display: block; }
+        }
+    </style>
+</head>
+<body>
+    <div id="loading">Loading...</div>
+    <canvas id="game"></canvas>
+    <div id="touch-hint">Tap top half to jump &nbsp;·&nbsp; Tap bottom half to duck</div>
+    <script src="game.js"></script>
+</body>
+</html>
